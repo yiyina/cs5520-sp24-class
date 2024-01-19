@@ -5,7 +5,7 @@ export default function Header({ name, children }) {
     console.log(name)
     return (
         <View>
-        <Text>Welcome to {name}</Text>
+            <Text>Welcome to {name}</Text>
         </View>
     )
 }
