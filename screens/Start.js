@@ -3,6 +3,12 @@ import React from 'react'
 import CheckBox from 'expo-checkbox';
 
 export default function StartScreen() {
+  const [isCheckBoxChecked, setIsCheckBoxChecked] = React.useState(false);
+
+  const handleCheckBoxChange = () => {
+    setIsCheckBoxChecked(!isCheckBoxChecked);
+  }
+
   return (
     <View style={styles.container}>
         <Text style={styles.title}>Guess My Number</Text>
@@ -12,17 +18,23 @@ export default function StartScreen() {
           <Text style={styles.text}>Enter a Number</Text>
           <TextInput style={styles.numberLine}></TextInput>
           <View style={styles.checkboxContainer}>
-            <CheckBox style={styles.checkbox}/>
+            <CheckBox 
+              style={styles.checkbox}
+              value={isCheckBoxChecked}
+              onValueChange={handleCheckBoxChange}/>
             <Text>I am not a robot</Text>
           </View>
           <View style={styles.submitContainer}>
             <TouchableOpacity>
-              <Text>Reset</Text>
+              <Text style={styles.resetButton}>Reset</Text>
             </TouchableOpacity>
-
-            <TouchableOpacity>
-              <Text>Submit</Text>
-            </TouchableOpacity>
+            {isCheckBoxChecked ? 
+              <TouchableOpacity>
+                <Text 
+                  style={styles.submitButton}>Confirm</Text>
+              </TouchableOpacity> :
+              <Text style={styles.disabledSubmitButton}>Confirm</Text>
+            }
           </View>
         </View>
     </View>
@@ -55,7 +67,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     elevation: 10,
     margin: 20,
-    alignItems: 'center', // 垂直居中
+    alignItems: 'center', 
   },
   text: {
     width: '100%',
@@ -67,12 +79,20 @@ const styles = StyleSheet.create({
     borderBottomColor: 'purple',
     width: '100%',
     marginBottom: 40,
+    color: 'purple',
+    fontWeight: 'bold',
+    paddingBottom: 10,
+    textAlign: 'center',
   },
   numberLine: {
     borderBottomWidth: 2,
     borderBottomColor: 'purple',
     width: '100%',
     marginBottom: 40,
+    color: 'purple',
+    fontWeight: 'bold',
+    paddingBottom: 10,
+    textAlign: 'center',
   },
   checkboxContainer: {
     marginTop: 10,
@@ -89,5 +109,13 @@ const styles = StyleSheet.create({
     marginTop: 20,
     width: '70%',
   },
-  
+  resetButton: {
+    color: 'red',
+  },
+  submitButton: {
+    color: 'blue',
+  },
+  disabledSubmitButton: {
+    color: 'white',
+  }
 })
