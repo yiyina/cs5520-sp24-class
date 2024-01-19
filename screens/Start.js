@@ -2,6 +2,8 @@ import { StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-nativ
 import React from 'react'
 import { useState } from 'react';
 import CheckBox from 'expo-checkbox';
+import Name from '../components/Name';
+import GuessNumber from '../components/GuessNumber';
 
 export default function StartScreen() {
   const [isCheckBoxChecked, setIsCheckBoxChecked] = useState(false);
@@ -46,21 +48,8 @@ export default function StartScreen() {
     <View style={styles.container}>
         <Text style={styles.title}>Guess My Number</Text>
         <View style={styles.card}>
-          <Text style={styles.nameText}>Name</Text>
-          <TextInput 
-            style={styles.nameInput}
-            value={userName}
-            onChangeText={getUserName}
-          />
-          <Text style={styles.errorAlert}>{errorName}</Text>
-
-          <Text style={styles.numberText}>Enter a Number</Text>
-          <TextInput 
-            style={styles.numberInput} 
-            value={guessNumber}
-            onChangeText={getGuessNumber}
-          />
-          <Text style={styles.errorAlert}>{errorNumber}</Text>
+          <Name userName={userName} errorName={errorName} getUserName={getUserName}/>
+          <GuessNumber guessNumber={guessNumber} errorNumber={errorNumber} getGuessNumber={getGuessNumber}/>
 
           <View style={styles.checkboxContainer}>
             <CheckBox 
@@ -116,48 +105,15 @@ const styles = StyleSheet.create({
     margin: 20,
     alignItems: 'center', 
   },
-  nameText: {
-    width: '100%',
-    color: 'purple',
-    marginBottom: 10,
-  },
-  numberText: {
-    width: '100%',
-    color: 'purple',
-    marginBottom: 10,
-    marginTop: 40,
-  },
-  nameInput: {
-    borderBottomWidth: 2,
-    borderBottomColor: 'purple',
-    width: '100%',
-    color: 'purple',
-    fontWeight: 'bold',
-    paddingBottom: 10,
-    textAlign: 'center',
-  },
-  numberInput: {
-    borderBottomWidth: 2,
-    borderBottomColor: 'purple',
-    width: '100%',
-    color: 'purple',
-    fontWeight: 'bold',
-    paddingBottom: 10,
-    textAlign: 'center',
-  },
-  errorAlert: {
-    color: 'black',
-    width: '100%',
-  },
   checkboxContainer: {
     marginTop: 10,
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
+    marginTop: 30,
   },
   checkbox: {
     marginRight: 10,
-    marginTop: 30,
   },
   submitContainer: {
     flexDirection: 'row',
