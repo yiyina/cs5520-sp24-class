@@ -1,9 +1,9 @@
 import { StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native'
 import React from 'react'
-import { useState } from 'react';
-import CheckBox from 'expo-checkbox';
+import { useState, useEffect } from 'react';
 import Name from '../components/Name';
 import GuessNumber from '../components/GuessNumber';
+import StartCheckBox from '../components/StartCheckBox';
 
 export default function StartScreen() {
   const [isCheckBoxChecked, setIsCheckBoxChecked] = useState(false);
@@ -12,8 +12,14 @@ export default function StartScreen() {
   const [errorName, setErrorName] = useState("");
   const [errorNumber, setErrorNumber] = useState("");
 
+  useEffect(() => {
+    console.log("isCheckBoxChecked has changed" + isCheckBoxChecked);
+  }, [isCheckBoxChecked]);
+
   const handleCheckBoxChange = () => {
+    console.log("handleCheckBoxChange called")
     setIsCheckBoxChecked(!isCheckBoxChecked);
+    console.log(isCheckBoxChecked)
   }
 
   function getUserName (name) {
@@ -43,6 +49,10 @@ export default function StartScreen() {
     }
     console.log("User name: " + userName + ", Guess number: " + guessNumber);
   }
+  function handleResetButtonPress () {
+    setUserName("");
+    setGuessNumber("");
+  }
 
   return (
     <View style={styles.container}>
@@ -50,17 +60,11 @@ export default function StartScreen() {
         <View style={styles.card}>
           <Name userName={userName} errorName={errorName} getUserName={getUserName}/>
           <GuessNumber guessNumber={guessNumber} errorNumber={errorNumber} getGuessNumber={getGuessNumber}/>
-
-          <View style={styles.checkboxContainer}>
-            <CheckBox 
-              style={styles.checkbox}
-              value={isCheckBoxChecked}
-              onValueChange={handleCheckBoxChange}/>
-            <Text>I am not a robot</Text>
-          </View>
+          <StartCheckBox isCheckBoxChecked={isCheckBoxChecked} handleCheckBox={handleCheckBoxChange} />
+          
           <View style={styles.submitContainer}>
             <TouchableOpacity>
-              <Text style={styles.resetButton}>Reset</Text>
+              <Text style={styles.resetButton} onPress={handleResetButtonPress}>Reset</Text>
             </TouchableOpacity>
             {isCheckBoxChecked ? 
               <TouchableOpacity>
@@ -104,16 +108,6 @@ const styles = StyleSheet.create({
     elevation: 10,
     margin: 20,
     alignItems: 'center', 
-  },
-  checkboxContainer: {
-    marginTop: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: '100%',
-    marginTop: 30,
-  },
-  checkbox: {
-    marginRight: 10,
   },
   submitContainer: {
     flexDirection: 'row',
