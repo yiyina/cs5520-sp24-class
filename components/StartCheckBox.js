@@ -11,7 +11,6 @@ export default function StartCheckBox({ isCheckBoxChecked, handleCheckBox }) {
               onValueChange={handleCheckBox}/>
       <Text>I am not a robot</Text>
     </View>
-
   )
 }
 

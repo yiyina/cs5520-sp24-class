@@ -1,9 +1,10 @@
-import { StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { useState, useEffect } from 'react';
 import Name from '../components/Name';
 import GuessNumber from '../components/GuessNumber';
 import StartCheckBox from '../components/StartCheckBox';
+import StartSubmit from '../components/StartSubmit';
 
 export default function StartScreen() {
   const [isCheckBoxChecked, setIsCheckBoxChecked] = useState(false);
@@ -61,21 +62,7 @@ export default function StartScreen() {
           <Name userName={userName} errorName={errorName} getUserName={getUserName}/>
           <GuessNumber guessNumber={guessNumber} errorNumber={errorNumber} getGuessNumber={getGuessNumber}/>
           <StartCheckBox isCheckBoxChecked={isCheckBoxChecked} handleCheckBox={handleCheckBoxChange} />
-          
-          <View style={styles.submitContainer}>
-            <TouchableOpacity>
-              <Text style={styles.resetButton} onPress={handleResetButtonPress}>Reset</Text>
-            </TouchableOpacity>
-            {isCheckBoxChecked ? 
-              <TouchableOpacity>
-                <Text 
-                  style={styles.submitButton}
-                  onPress={handleConfirmButtonPress}
-                >Confirm</Text>
-              </TouchableOpacity> :
-              <Text style={styles.disabledSubmitButton}>Confirm</Text>
-            }
-          </View>
+          <StartSubmit isCheckBoxChecked={isCheckBoxChecked} handleResetButtonPress={handleResetButtonPress} handleConfirmButtonPress={handleConfirmButtonPress}/>
         </View>
     </View>
   )
@@ -109,19 +96,4 @@ const styles = StyleSheet.create({
     margin: 20,
     alignItems: 'center', 
   },
-  submitContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 20,
-    width: '70%',
-  },
-  resetButton: {
-    color: 'red',
-  },
-  submitButton: {
-    color: 'blue',
-  },
-  disabledSubmitButton: {
-    color: 'white',
-  }
 })
