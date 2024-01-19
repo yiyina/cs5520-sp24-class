@@ -1,22 +1,67 @@
 import { StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native'
 import React from 'react'
+import { useState } from 'react';
 import CheckBox from 'expo-checkbox';
 
 export default function StartScreen() {
-  const [isCheckBoxChecked, setIsCheckBoxChecked] = React.useState(false);
+  const [isCheckBoxChecked, setIsCheckBoxChecked] = useState(false);
+  const [userName, setUserName] = useState("");
+  const [guessNumber, setGuessNumber] = useState("");
+  const [errorName, setErrorName] = useState("");
+  const [errorNumber, setErrorNumber] = useState("");
 
   const handleCheckBoxChange = () => {
     setIsCheckBoxChecked(!isCheckBoxChecked);
+  }
+
+  function getUserName (name) {
+    console.log(name);
+    setUserName(name);
+  }
+
+  function getGuessNumber (number) {
+    console.log(number);
+    setGuessNumber(number);
+  }
+
+  function handleConfirmButtonPress () {
+    if (userName.length <= 1 || !/^[a-zA-Z]+$/.test(userName)) {
+      setErrorName("Please enter a valid name");
+      setUserName("");
+    } else {
+      setErrorName("");
+    }
+
+    const parsedNumber = parseInt(guessNumber, 10);
+    if (!isNaN(parsedNumber) && (parsedNumber < 1020 || parsedNumber > 1029)) {
+      setErrorNumber("Please enter a valid number between 1020 and 1029");
+      setGuessNumber("");
+    } else {
+      setErrorNumber("");
+    }
+    console.log("User name: " + userName + ", Guess number: " + guessNumber);
   }
 
   return (
     <View style={styles.container}>
         <Text style={styles.title}>Guess My Number</Text>
         <View style={styles.card}>
-          <Text style={styles.text}>Name</Text>
-          <TextInput style={styles.nameLine}></TextInput>
-          <Text style={styles.text}>Enter a Number</Text>
-          <TextInput style={styles.numberLine}></TextInput>
+          <Text style={styles.nameText}>Name</Text>
+          <TextInput 
+            style={styles.nameInput}
+            value={userName}
+            onChangeText={getUserName}
+          />
+          <Text style={styles.errorAlert}>{errorName}</Text>
+
+          <Text style={styles.numberText}>Enter a Number</Text>
+          <TextInput 
+            style={styles.numberInput} 
+            value={guessNumber}
+            onChangeText={getGuessNumber}
+          />
+          <Text style={styles.errorAlert}>{errorNumber}</Text>
+
           <View style={styles.checkboxContainer}>
             <CheckBox 
               style={styles.checkbox}
@@ -31,7 +76,9 @@ export default function StartScreen() {
             {isCheckBoxChecked ? 
               <TouchableOpacity>
                 <Text 
-                  style={styles.submitButton}>Confirm</Text>
+                  style={styles.submitButton}
+                  onPress={handleConfirmButtonPress}
+                >Confirm</Text>
               </TouchableOpacity> :
               <Text style={styles.disabledSubmitButton}>Confirm</Text>
             }
@@ -69,30 +116,38 @@ const styles = StyleSheet.create({
     margin: 20,
     alignItems: 'center', 
   },
-  text: {
+  nameText: {
     width: '100%',
     color: 'purple',
     marginBottom: 10,
   },
-  nameLine: {
+  numberText: {
+    width: '100%',
+    color: 'purple',
+    marginBottom: 10,
+    marginTop: 40,
+  },
+  nameInput: {
     borderBottomWidth: 2,
     borderBottomColor: 'purple',
     width: '100%',
-    marginBottom: 40,
     color: 'purple',
     fontWeight: 'bold',
     paddingBottom: 10,
     textAlign: 'center',
   },
-  numberLine: {
+  numberInput: {
     borderBottomWidth: 2,
     borderBottomColor: 'purple',
     width: '100%',
-    marginBottom: 40,
     color: 'purple',
     fontWeight: 'bold',
     paddingBottom: 10,
     textAlign: 'center',
+  },
+  errorAlert: {
+    color: 'black',
+    width: '100%',
   },
   checkboxContainer: {
     marginTop: 10,
@@ -102,6 +157,7 @@ const styles = StyleSheet.create({
   },
   checkbox: {
     marginRight: 10,
+    marginTop: 30,
   },
   submitContainer: {
     flexDirection: 'row',
