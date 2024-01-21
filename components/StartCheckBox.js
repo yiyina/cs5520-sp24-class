@@ -16,11 +16,10 @@ export default function StartCheckBox({ isCheckBoxChecked, handleCheckBox }) {
 
 const styles = StyleSheet.create({
     checkboxContainer: {
-      marginTop: 10,
       flexDirection: 'row',
       alignItems: 'center',
       width: '100%',
-      marginTop: 30,
+      marginTop: 10,
     },
     checkbox: {
       marginRight: 10,

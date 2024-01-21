@@ -1,10 +1,9 @@
 import { Modal, StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react';
-import Name from '../components/Name';
-import GuessNumber from '../components/GuessNumber';
 import StartCheckBox from '../components/StartCheckBox';
 import StartSubmit from '../components/StartSubmit';
 import Game from './Game';
+import StartInput from '../components/StartInput';
 
 /* 
  * Function: StartScreen
@@ -98,8 +97,8 @@ export default function StartScreen() {
     <View style={styles.container}>
         <Text style={styles.title}>Guess My Number</Text>
         <View style={styles.card}>
-          <Name userName={userName} errorName={errorName} getUserName={getUserName}/>
-          <GuessNumber guessNumber={guessNumber} errorNumber={errorNumber} getGuessNumber={getGuessNumber}/>
+          <StartInput textInput={"Name"} errorMessage={errorName} getInput={getUserName}/>
+          <StartInput textInput={"Guess a Number"} errorMessage={errorNumber} getInput={getGuessNumber}/>
           <StartCheckBox isCheckBoxChecked={isCheckBoxChecked} handleCheckBox={handleCheckBoxChange} />
           <StartSubmit isCheckBoxChecked={isCheckBoxChecked} handleResetButtonPress={handleResetButtonPress} handleConfirmButtonPress={handleConfirmButtonPress}/>
           <Modal visible={modalVisible}>

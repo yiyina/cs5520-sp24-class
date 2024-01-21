@@ -1,16 +1,15 @@
 import { StyleSheet, Text, TextInput, View } from 'react-native'
 import React from 'react'
 
-export default function GuessNumber({ guessNumber, errorNumber, getGuessNumber }) {
+export default function StartInput({ textInput, errorMessage, getInput }) {
   return (
     <View style={styles.container}>
-        <Text style={styles.numberText}>Enter a Number</Text>
+        <Text style={styles.text}>{textInput}</Text>
             <TextInput 
-                style={styles.numberInput} 
-                value={guessNumber}
-                onChangeText={getGuessNumber}
+                style={styles.inputLine} 
+                onChangeText={getInput}
             />
-        <Text style={styles.errorAlert}>{errorNumber}</Text>
+        <Text style={styles.errorAlert}>{errorMessage}</Text>
     </View>
   )
 }
@@ -19,14 +18,15 @@ const styles = StyleSheet.create({
     container: {
         width: '100%',
         alignItems: 'center',
+        marginBottom: 20,
     },
-    numberText: {
+    text: {
+        fontSize: 16,
         width: '100%',
         color: 'purple',
         marginBottom: 10,
-        marginTop: 40,
     },
-    numberInput: {
+    inputLine: {
         borderBottomWidth: 2,
         borderBottomColor: 'purple',
         width: '100%',
