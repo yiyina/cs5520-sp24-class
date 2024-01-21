@@ -31,13 +31,14 @@ const styles = StyleSheet.create({
         width: '70%',
     },
     resetButton: {
-        marginTop: 10,
         color: 'red',
+        marginTop: 10,
     },
     submitButton: {
         color: 'blue',
     },
     disabledSubmitButton: {
         color: 'white',
+        marginTop: 10,
     }
 })
