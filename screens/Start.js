@@ -1,21 +1,26 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
-import { useState, useEffect } from 'react';
+import { Modal, StyleSheet, Text, View } from 'react-native'
+import React, { useState } from 'react';
 import Name from '../components/Name';
 import GuessNumber from '../components/GuessNumber';
 import StartCheckBox from '../components/StartCheckBox';
 import StartSubmit from '../components/StartSubmit';
+import Game from './Game';
 
+/* 
+ * Function: StartScreen
+ * Purpose: render the start screen
+ * Parameters: none
+ * Return: the start screen
+ */
 export default function StartScreen() {
   const [isCheckBoxChecked, setIsCheckBoxChecked] = useState(false);
   const [userName, setUserName] = useState("");
   const [guessNumber, setGuessNumber] = useState("");
+  const [theNumber, setTheNumber] = useState(0); 
   const [errorName, setErrorName] = useState("");
   const [errorNumber, setErrorNumber] = useState("");
-
-  useEffect(() => {
-    console.log("isCheckBoxChecked has changed" + isCheckBoxChecked);
-  }, [isCheckBoxChecked]);
+  const [count, setCount] = useState(3);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const handleCheckBoxChange = () => {
     console.log("handleCheckBoxChange called")
@@ -24,32 +29,66 @@ export default function StartScreen() {
   }
 
   function getUserName (name) {
-    console.log(name);
     setUserName(name);
   }
 
   function getGuessNumber (number) {
-    console.log(number);
     setGuessNumber(number);
   }
 
+  /*
+   * Function: getRandomNumber 
+   * Purpose: get a random number between 1020 and 1029
+   * Parameters: none
+   * Return: a random number between 1020 and 1029
+   */
+  function getRandomNumber () {
+    console.log("getRandomNumber called")
+    const min = 1020;
+    const max = 1029;
+    const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+    return randomNumber;
+  }
+
+  /* 
+   * Function: handleConfirmButtonPress
+   * Purpose: handle the 'Confirm' button press
+   * Parameters: none
+   * Return: none
+   */
   function handleConfirmButtonPress () {
+    let isValid = true;
+    setErrorName("");
+    setErrorNumber("");
+
     if (userName.length <= 1 || !/^[a-zA-Z]+$/.test(userName)) {
       setErrorName("Please enter a valid name");
       setUserName("");
-    } else {
-      setErrorName("");
+      isValid = false;
     }
 
     const parsedNumber = parseInt(guessNumber, 10);
     if (!isNaN(parsedNumber) && (parsedNumber < 1020 || parsedNumber > 1029)) {
       setErrorNumber("Please enter a valid number between 1020 and 1029");
       setGuessNumber("");
-    } else {
-      setErrorNumber("");
+      isValid = false;
     }
-    console.log("User name: " + userName + ", Guess number: " + guessNumber);
+    
+    if (isValid) {
+      if (count === 0 || count === 3) {
+        // Start a new game
+        const newNumber = getRandomNumber();
+        setTheNumber(newNumber);
+        setCount(2);  // Set to 2 because this attempt will count as the first one
+        console.log(`New game started. The number is ${newNumber}`);
+      } else {
+        setCount(count - 1);  // Deduct one attempt every time the user clicks the 'Confirm' button
+      }
+      setIsCheckBoxChecked(false);
+      setModalVisible(true);
+    }
   }
+
   function handleResetButtonPress () {
     setUserName("");
     setGuessNumber("");
@@ -63,6 +102,16 @@ export default function StartScreen() {
           <GuessNumber guessNumber={guessNumber} errorNumber={errorNumber} getGuessNumber={getGuessNumber}/>
           <StartCheckBox isCheckBoxChecked={isCheckBoxChecked} handleCheckBox={handleCheckBoxChange} />
           <StartSubmit isCheckBoxChecked={isCheckBoxChecked} handleResetButtonPress={handleResetButtonPress} handleConfirmButtonPress={handleConfirmButtonPress}/>
+          <Modal visible={modalVisible}>
+            <Game 
+              userName={userName} 
+              guessNumber={guessNumber} 
+              theNumber={theNumber} 
+              count={count}
+              setCount={setCount}
+              // updateGameStatus={updateGameStatus}
+              closeModal={() => setModalVisible(false)}/>
+          </Modal>
         </View>
     </View>
   )
