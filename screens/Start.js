@@ -1,9 +1,10 @@
 import { Modal, StyleSheet, Text, View } from 'react-native'
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import StartInput from '../components/StartInput';
 import StartCheckBox from '../components/StartCheckBox';
 import StartSubmit from '../components/StartSubmit';
 import Game from './Game';
-import StartInput from '../components/StartInput';
+import Final from './Final';
 
 /* 
  * Function: StartScreen
@@ -19,7 +20,9 @@ export default function StartScreen() {
   const [errorName, setErrorName] = useState("");
   const [errorNumber, setErrorNumber] = useState("");
   const [count, setCount] = useState(3);
-  const [modalVisible, setModalVisible] = useState(false);
+  const [gameModal, setGameModal] = useState(false);
+  const [finalModal, setFinalModal] = useState(false);
+  const [gameResult, setGameResult] = useState("");
 
   const handleCheckBoxChange = () => {
     console.log("handleCheckBoxChange called")
@@ -74,17 +77,18 @@ export default function StartScreen() {
     }
     
     if (isValid) {
+      console.log("setGuessNumber: " + parsedNumber.toString());
       if (count === 0 || count === 3) {
         // Start a new game
-        const newNumber = getRandomNumber();
-        setTheNumber(newNumber);
+        const randomNumber = getRandomNumber();
+        setTheNumber(randomNumber);
         setCount(2);  // Set to 2 because this attempt will count as the first one
-        console.log(`New game started. The number is ${newNumber}`);
+        console.log(`New game started. The random number is ${randomNumber}`);
       } else {
         setCount(count - 1);  // Deduct one attempt every time the user clicks the 'Confirm' button
       }
       setIsCheckBoxChecked(false);
-      setModalVisible(true);
+      setGameModal(true);
     }
   }
 
@@ -93,23 +97,51 @@ export default function StartScreen() {
     setGuessNumber("");
   }
 
+  function resetGame() {
+    console.log("resetGame called");
+    setUserName("");
+    setGuessNumber("");
+    setTheNumber(0);
+    setErrorName("");
+    setErrorNumber("");
+    setCount(3);
+    setIsCheckBoxChecked(false);
+  }
+
+  function handleGameEnd(result) {
+    console.log("handleGameEnd called");
+    setGameResult(result);
+    setGameModal(false);
+    setFinalModal(true); 
+  }
+
+  function handleStartAgain() {
+    console.log("handleStartAgain called");
+    setFinalModal(false); 
+    resetGame();         
+  }
+
   return (
     <View style={styles.container}>
         <Text style={styles.title}>Guess My Number</Text>
         <View style={styles.card}>
-          <StartInput textInput={"Name"} errorMessage={errorName} getInput={getUserName}/>
-          <StartInput textInput={"Guess a Number"} errorMessage={errorNumber} getInput={getGuessNumber}/>
+          <StartInput textInput={"Name"} errorMessage={errorName} getInput={getUserName} value={userName}/>
+          <StartInput textInput={"Guess a Number"} errorMessage={errorNumber} getInput={getGuessNumber} value={guessNumber}/>
           <StartCheckBox isCheckBoxChecked={isCheckBoxChecked} handleCheckBox={handleCheckBoxChange} />
-          <StartSubmit isCheckBoxChecked={isCheckBoxChecked} handleResetButtonPress={handleResetButtonPress} handleConfirmButtonPress={handleConfirmButtonPress}/>
-          <Modal visible={modalVisible}>
+          <StartSubmit isCheckBoxChecked={isCheckBoxChecked} resetButtonPress={handleResetButtonPress} confirmButtonPress={handleConfirmButtonPress}/>
+          <Modal visible={gameModal}>
             <Game 
               userName={userName} 
               guessNumber={guessNumber} 
+              setGuessNumber={setGuessNumber}
               theNumber={theNumber} 
               count={count}
               setCount={setCount}
-              // updateGameStatus={updateGameStatus}
-              closeModal={() => setModalVisible(false)}/>
+              closeModal={() => setGameModal(false)}
+              onGameEnd={handleGameEnd}/>
+          </Modal>
+          <Modal visible={finalModal}>
+              <Final gameResult={gameResult} guessNumber={guessNumber} startAgain={handleStartAgain}/>
           </Modal>
         </View>
     </View>
@@ -132,8 +164,8 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: 'darkgray',
-    width: 300,
-    height: 400,
+    width: '70%',
+    height: '40%',
     padding: 20,
     borderRadius: 10,
     shadowColor: 'black',

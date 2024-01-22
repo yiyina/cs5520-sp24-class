@@ -1,12 +1,13 @@
 import { StyleSheet, Text, TextInput, View } from 'react-native'
 import React from 'react'
 
-export default function StartInput({ textInput, errorMessage, getInput }) {
+export default function StartInput({ textInput, errorMessage, getInput, value }) {
   return (
     <View style={styles.container}>
         <Text style={styles.text}>{textInput}</Text>
             <TextInput 
                 style={styles.inputLine} 
+                value={value}
                 onChangeText={getInput}
             />
         <Text style={styles.errorAlert}>{errorMessage}</Text>

@@ -1,9 +1,9 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import { useState, useEffect } from 'react';
 import React from 'react'
 import Button from '../components/Button';
 
-export default function Game({ userName, guessNumber, theNumber, count, setCount, closeModal }) {
+export default function Game({ userName, guessNumber, theNumber, count, setCount, closeModal, onGameEnd }) {
     const [win, setWin] = useState(false);
     const [message, setMessage] = useState("");
 
@@ -11,10 +11,16 @@ export default function Game({ userName, guessNumber, theNumber, count, setCount
      * useEffect hook is called after the component is rendered
      */
     useEffect(() => {
+        console.log("useEffect triggered", { guessNumber, theNumber, count });
         if (guessNumber && userName) { 
             compareNumbers();
         }
     }, [guessNumber, theNumber, count]);
+
+    function handleGameOver() {
+        console.log("Game handleGameOver called");
+        onGameEnd(win);
+    }
 
     /* 
      * Function: compareNumbers
@@ -27,25 +33,16 @@ export default function Game({ userName, guessNumber, theNumber, count, setCount
         console.log("User name: " + userName + ", Guess number: " + guessNumber + " The number is: " + theNumber + " Count: " + count);
         if (parseInt(guessNumber) === theNumber) {
             setWin(true);
-            setMessage("Congrats " + userName + " You Won!");
+            setMessage("Congrats " + userName + "! You Won!");
             setCount(0);
+            // handleGameOver();
         } else if (count === 0) {
-            setWin(false);
+            // setGameOver(true);
             setMessage("Hello " + userName + "\nYou have chosen " + guessNumber + "\nThat's not my number!\nYou have no attempts left!");
         } else {
             let hint = guessNumber < theNumber ? "Guess higher!" : "Guess lower!";
             setMessage("Hello " + userName + "\nYou have chosen " + guessNumber + "\nThat's not my number!\n" + hint + "\nYou have " + count + " attempts left!");
         }
-    }
-
-    /*
-     * Function: handleDone
-     * Purpose: handle the 'I am done' button press 
-     * Parameters: none
-     * Return: none
-     */
-    function handleDone() {
-        closeModal();
     }
 
     /*
@@ -57,7 +54,7 @@ export default function Game({ userName, guessNumber, theNumber, count, setCount
     function handleTryAgain() {
         closeModal();
     }
-    
+
     return (
         <View style={styles.container}>
             <View style={styles.card}>
@@ -65,11 +62,11 @@ export default function Game({ userName, guessNumber, theNumber, count, setCount
                     {message}
                 </Text>
                 {win ? 
-                    <Button text={'Thank you!'} onPress={handleDone} color={'blue'}/>
+                    <Button text={'Thank you!'} onPress={handleGameOver} color={'blue'}/>
                 : 
                 <>
-                    <Button text="I am done" onPress={handleDone} color="red" />
-                    <Button text="Let Me Guess Again" onPress={handleTryAgain} color="blue" />
+                    <Button text="I am done" onPress={handleGameOver} color={"red"} /> 
+                    <Button text="Let Me Guess Again" onPress={handleTryAgain} color={"blue"} />
                 </>
                 }
             </View>

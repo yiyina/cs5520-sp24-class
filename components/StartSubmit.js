@@ -5,17 +5,17 @@ import Button from './Button'
 /*
  * Function: StartSubmit
  * Purpose: render the submit buttons
- * Parameters: isCheckBoxChecked, handleResetButtonPress, handleConfirmButtonPress
+ * Parameters: isCheckBoxChecked, resetButtonPress, confirmButtonPress
  * Return: submit buttons
  */
-export default function StartSubmit({ isCheckBoxChecked, handleResetButtonPress, handleConfirmButtonPress }) {
+export default function StartSubmit({ isCheckBoxChecked, resetButtonPress, confirmButtonPress }) {
   return (
     <View style={styles.submitContainer}>
         <TouchableOpacity>
-            <Text style={styles.resetButton} onPress={handleResetButtonPress}>Reset</Text>
+            <Text style={styles.resetButton} onPress={resetButtonPress}>Reset</Text>
         </TouchableOpacity>
         {isCheckBoxChecked ? 
-            <Button text={'Confirm'} onPress={handleConfirmButtonPress} color={'blue'}/>
+            <Button text={'Confirm'} onPress={confirmButtonPress} color={'blue'}/>
          :
             <Text style={styles.disabledSubmitButton}>Confirm</Text>
         }
