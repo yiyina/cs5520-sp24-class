@@ -71,7 +71,7 @@ export default function StartScreen() {
     }
 
     const parsedNumber = parseInt(guessNumber, 10);
-    if (!isNaN(parsedNumber) && (parsedNumber < 1020 || parsedNumber > 1029)) {
+    if (parsedNumber === "" || isNaN(parsedNumber) || parsedNumber < 1020 || parsedNumber > 1029) {
       setErrorNumber("Please enter a valid number between 1020 and 1029");
       setGuessNumber("");
       isValid = false;
