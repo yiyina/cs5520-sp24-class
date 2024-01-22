@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, Image } from 'react-native'
 import React from 'react'
 import Button from '../components/Button'
+import colors from '../components/Colors';
 
 export default function Final({ gameResult, guessNumber, startAgain }) {
     console.log("Current guess number:", guessNumber);
@@ -27,24 +28,24 @@ export default function Final({ gameResult, guessNumber, startAgain }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'pink',
+        backgroundColor: colors.background,
         paddingTop: 60,
         width: '100%',
         alignItems: 'center',
     },
     title: {
-        color: 'purple',
+        color: colors.text,
         fontSize: 20,
         textAlign: 'center',
         marginBottom: 20,
     },
     card: {
-        backgroundColor: 'darkgray',
-        width: '60%',
-        height: '30%',
+        backgroundColor: colors.card,
+        width: '70%',
+        height: '40%',
         padding: 20,
         borderRadius: 10,
-        shadowColor: 'black',
+        shadowColor: colors.shadow,
         shadowOffset: {width: 2, height: 2},
         shadowRadius: 6,
         shadowOpacity: 0.5,
@@ -56,12 +57,13 @@ const styles = StyleSheet.create({
         marginTop: 10,
         width: '60%',
         height: '60%',
+        resizeMode: 'contain', // show the whole image
     },
     text: {
         fontWeight: 'bold',
         fontSize: 20,
         width: '100%',
-        color: 'purple',
+        color: colors.text,
         marginBottom: 10,
         textAlign: 'center',
     },
