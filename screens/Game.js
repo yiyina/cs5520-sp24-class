@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import { useState, useEffect } from 'react';
 import React from 'react'
 import Button from '../components/Button';
+import colors from '../components/Colors';
 
 export default function Game({ userName, guessNumber, theNumber, count, setCount, closeModal, onGameEnd }) {
     const [win, setWin] = useState(false);
@@ -62,11 +63,11 @@ export default function Game({ userName, guessNumber, theNumber, count, setCount
                     {message}
                 </Text>
                 {win ? 
-                    <Button text={'Thank you!'} onPress={handleGameOver} color={'blue'}/>
+                    <Button text={'Thank you!'} onPress={handleGameOver} color={'confirm'}/>
                 : 
                 <>
-                    <Button text="I am done" onPress={handleGameOver} color={"red"} /> 
-                    <Button text="Let Me Guess Again" onPress={handleTryAgain} color={"blue"} />
+                    <Button text="I am done" onPress={handleGameOver} color={'alert'} /> 
+                    <Button text="Let Me Guess Again" onPress={handleTryAgain} color={'confirm'} />
                 </>
                 }
             </View>
@@ -77,14 +78,14 @@ export default function Game({ userName, guessNumber, theNumber, count, setCount
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'pink',
+        backgroundColor: colors.background,
         paddingTop: 60,
         width: '100%',
         alignItems: 'center',
     },
     card: {
         width: '80%',
-        backgroundColor: 'darkgray',
+        backgroundColor: colors.card,
         padding: 20,
         borderRadius: 10,
         shadowColor: 'black',
@@ -97,22 +98,22 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     resultsText: {
-        color: 'purple',
+        color: colors.text,
         textAlign: 'center',
         fontSize: 20,
         marginBottom: 10,
     },
     done: {
-        color: 'red',
+        color: colors.alert,
         marginBottom: 10,
         textAlign: 'center',
     },
     playAgain: {
-        color: 'blue',
+        color: colors.confirm,
         textAlign: 'center',
         marginTop: 10,
     },
     thanks: {
-        color: 'blue',
+        color: colors.confirm,
     }
 })

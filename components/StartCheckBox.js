@@ -1,6 +1,7 @@
-import { StyleSheet, Text, View,  TouchableOpacity} from 'react-native'
+import { StyleSheet, Text, View} from 'react-native'
 import React from 'react'
 import CheckBox from 'expo-checkbox';
+import colors from './Colors';
 
 export default function StartCheckBox({ isCheckBoxChecked, handleCheckBox }) {
   return (
@@ -9,7 +10,7 @@ export default function StartCheckBox({ isCheckBoxChecked, handleCheckBox }) {
               style={styles.checkbox}
               value={isCheckBoxChecked}
               onValueChange={handleCheckBox}/>
-      <Text>I am not a robot</Text>
+      <Text style={styles.text}>I am not a robot</Text>
     </View>
   )
 }
@@ -23,5 +24,8 @@ const styles = StyleSheet.create({
   },
   checkbox: {
     marginRight: 10,
+  },
+  text: {
+    color: colors.text,
   },
 })

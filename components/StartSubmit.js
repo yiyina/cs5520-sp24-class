@@ -1,6 +1,7 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import Button from './Button'
+import colors from './Colors';
 
 /*
  * Function: StartSubmit
@@ -11,13 +12,11 @@ import Button from './Button'
 export default function StartSubmit({ isCheckBoxChecked, resetButtonPress, confirmButtonPress }) {
   return (
     <View style={styles.submitContainer}>
-        <TouchableOpacity>
-            <Text style={styles.resetButton} onPress={resetButtonPress}>Reset</Text>
-        </TouchableOpacity>
+        <Button text={'Reset'} onPress={resetButtonPress} color={'alert'}/>
         {isCheckBoxChecked ? 
-            <Button text={'Confirm'} onPress={confirmButtonPress} color={'blue'}/>
+            <Button text={'Confirm'} onPress={confirmButtonPress} color={'confirm'}/>
          :
-            <Text style={styles.disabledSubmitButton}>Confirm</Text>
+            <Text style={styles.disableConfirmButton}>Confirm</Text>
         }
     </View>
   )
@@ -30,15 +29,9 @@ const styles = StyleSheet.create({
         marginTop: 20,
         width: '70%',
     },
-    resetButton: {
-        color: 'red',
+    disableConfirmButton: {
+        color: colors.disableConfirm,
         marginTop: 10,
-    },
-    submitButton: {
-        color: 'blue',
-    },
-    disabledSubmitButton: {
-        color: 'white',
-        marginTop: 10,
+        fontSize: 18,
     }
 })

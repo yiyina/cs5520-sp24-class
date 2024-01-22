@@ -5,6 +5,7 @@ import StartCheckBox from '../components/StartCheckBox';
 import StartSubmit from '../components/StartSubmit';
 import Game from './Game';
 import Final from './Final';
+import colors from '../components/Colors';
 
 /* 
  * Function: StartScreen
@@ -95,6 +96,8 @@ export default function StartScreen() {
   function handleResetButtonPress () {
     setUserName("");
     setGuessNumber("");
+    setErrorName("");
+    setErrorNumber("");
   }
 
   function resetGame() {
@@ -141,7 +144,10 @@ export default function StartScreen() {
               onGameEnd={handleGameEnd}/>
           </Modal>
           <Modal visible={finalModal}>
-              <Final gameResult={gameResult} guessNumber={guessNumber} startAgain={handleStartAgain}/>
+            <Final 
+              gameResult={gameResult} 
+              guessNumber={guessNumber} 
+              startAgain={handleStartAgain}/>
           </Modal>
         </View>
     </View>
@@ -151,24 +157,24 @@ export default function StartScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'pink',
+    backgroundColor: colors.background,
     paddingTop: 60,
     width: '100%',
     alignItems: 'center',
   },
   title: {
-    color: 'purple',
+    color: colors.text,
     fontSize: 20,
     textAlign: 'center',
     marginBottom: 20,
   },
   card: {
-    backgroundColor: 'darkgray',
+    backgroundColor: colors.card,
     width: '70%',
     height: '40%',
     padding: 20,
     borderRadius: 10,
-    shadowColor: 'black',
+    shadowColor: colors.shadow,
     shadowOffset: {width: 2, height: 2},
     shadowRadius: 6,
     shadowOpacity: 0.5,

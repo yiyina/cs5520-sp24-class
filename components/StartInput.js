@@ -1,5 +1,6 @@
 import { StyleSheet, Text, TextInput, View } from 'react-native'
 import React from 'react'
+import colors from './Colors';
 
 export default function StartInput({ textInput, errorMessage, getInput, value }) {
   return (
@@ -24,20 +25,20 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 16,
         width: '100%',
-        color: 'purple',
+        color: colors.text,
         marginBottom: 10,
     },
     inputLine: {
         borderBottomWidth: 2,
-        borderBottomColor: 'purple',
+        borderBottomColor: colors.text,
         width: '100%',
-        color: 'purple',
+        color: colors.text,
         fontWeight: 'bold',
         paddingBottom: 10,
         textAlign: 'center',
     },
     errorAlert: {
-        color: 'black',
+        color: colors.default,
         width: '100%',
     },
 })

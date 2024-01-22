@@ -18,7 +18,7 @@ export default function Final({ gameResult, guessNumber, startAgain }) {
                 : 
                     <Image source={sadFaceImg} style={styles.image} />
                 }
-                <Button text={'Start Again'} onPress={startAgain} color={'blue'} />
+                <Button text={'Start Again'} onPress={startAgain} color={'confirm'} />
             </View>
         </View>
     )
