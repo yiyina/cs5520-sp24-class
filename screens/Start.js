@@ -1,5 +1,6 @@
 import { Modal, StyleSheet, Text, View } from 'react-native'
 import React, { useState, useEffect } from 'react';
+import { LinearGradient } from 'expo-linear-gradient';
 import StartInput from '../components/StartInput';
 import StartCheckBox from '../components/StartCheckBox';
 import StartSubmit from '../components/StartSubmit';
@@ -125,41 +126,42 @@ export default function StartScreen() {
   }
 
   return (
-    <View style={styles.container}>
-        <Text style={styles.title}>Guess My Number</Text>
-        <View style={styles.card}>
-          <StartInput textInput={"Name"} errorMessage={errorName} getInput={getUserName} value={userName}/>
-          <StartInput textInput={"Guess a Number"} errorMessage={errorNumber} getInput={getGuessNumber} value={guessNumber}/>
-          <StartCheckBox isCheckBoxChecked={isCheckBoxChecked} handleCheckBox={handleCheckBoxChange} />
-          <StartSubmit isCheckBoxChecked={isCheckBoxChecked} resetButtonPress={handleResetButtonPress} confirmButtonPress={handleConfirmButtonPress}/>
-          <Modal visible={gameModal}>
-            <Game 
-              userName={userName} 
-              guessNumber={guessNumber} 
-              setGuessNumber={setGuessNumber}
-              theNumber={theNumber} 
-              count={count}
-              setCount={setCount}
-              closeModal={() => setGameModal(false)}
-              onGameEnd={handleGameEnd}/>
-          </Modal>
-          <Modal visible={finalModal}>
-            <Final 
-              gameResult={gameResult} 
-              guessNumber={guessNumber} 
-              startAgain={handleStartAgain}/>
-          </Modal>
-        </View>
-    </View>
+    <LinearGradient style={styles.container} 
+      colors={['#D8BFD8', '#A670C0']}
+      start={[0.5, 0]}
+      end={[0.5, 1]}>
+      <Text style={styles.title}>Guess My Number</Text>
+      <View style={styles.card}>
+        <StartInput textInput={"Name"} errorMessage={errorName} getInput={getUserName} value={userName}/>
+        <StartInput textInput={"Guess a Number"} errorMessage={errorNumber} getInput={getGuessNumber} value={guessNumber}/>
+        <StartCheckBox isCheckBoxChecked={isCheckBoxChecked} handleCheckBox={handleCheckBoxChange} />
+        <StartSubmit isCheckBoxChecked={isCheckBoxChecked} resetButtonPress={handleResetButtonPress} confirmButtonPress={handleConfirmButtonPress}/>
+        <Modal visible={gameModal}>
+          <Game 
+            userName={userName} 
+            guessNumber={guessNumber} 
+            setGuessNumber={setGuessNumber}
+            theNumber={theNumber} 
+            count={count}
+            setCount={setCount}
+            closeModal={() => setGameModal(false)}
+            onGameEnd={handleGameEnd}/>
+        </Modal>
+        <Modal visible={finalModal}>
+          <Final 
+            gameResult={gameResult} 
+            guessNumber={guessNumber} 
+            startAgain={handleStartAgain}/>
+        </Modal>
+      </View>
+    </LinearGradient>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
-    // backgroundColor: 'transparent',
-    // backgroundImage: 'linear-gradient(to top, #D8BFD8, #d7e1ec)',
+    backgroundColor: 'transparent',
     paddingTop: 60,
     width: '100%',
     alignItems: 'center',

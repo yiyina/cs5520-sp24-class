@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import { useState, useEffect } from 'react';
 import React from 'react'
+import { LinearGradient } from 'expo-linear-gradient';
 import Button from '../components/Button';
 import colors from '../components/Colors';
 
@@ -55,7 +56,11 @@ export default function Game({ userName, guessNumber, theNumber, count, setCount
     }
 
     return (
-        <View style={styles.container}>
+        <LinearGradient 
+            style={styles.container}
+            colors={['#D8BFD8', '#A670C0']}
+            start={[0.5, 0]}
+            end={[0.5, 1]}>
             <View style={styles.card}>
                 <Text style={styles.resultsText}>
                     {message}
@@ -73,7 +78,7 @@ export default function Game({ userName, guessNumber, theNumber, count, setCount
                 </>
                 }
             </View>
-        </View>
+        </LinearGradient>
     )
 }
 

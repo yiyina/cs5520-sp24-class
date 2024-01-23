@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, Image } from 'react-native'
 import React from 'react'
+import { LinearGradient } from 'expo-linear-gradient';
 import Button from '../components/Button'
 import colors from '../components/Colors';
 
@@ -10,7 +11,11 @@ export default function Final({ gameResult, guessNumber, startAgain }) {
     const sadFaceImg = require('../assets/sadface.png');
 
     return (
-        <View style={styles.container}>
+        <LinearGradient 
+            style={styles.container}
+            colors={['#D8BFD8', '#A670C0']}
+            start={[0.5, 0]}
+            end={[0.5, 1]}>
             <Text style={styles.title}>Game is Over</Text>
             <View style={styles.card}>
                 <Text style={styles.text}>Here's your picture</Text>
@@ -21,7 +26,7 @@ export default function Final({ gameResult, guessNumber, startAgain }) {
                 }
                 <Button text={'Start Again'} onPress={startAgain} color={'confirm'} />
             </View>
-        </View>
+        </LinearGradient>
     )
 }
 
