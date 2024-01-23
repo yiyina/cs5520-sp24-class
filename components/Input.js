@@ -31,8 +31,14 @@ export default function Input({ inputHandler, modalVisible, dismissModal }) {
                     value={text} 
                     onChangeText={changeTextHandler}
                 />
-                <Button title='Confirm' onPress={confirmHandler} />
-                <Button title='Cancel' onPress={cancelHandler} />
+                <View style={styles.buttonContainer}>
+                    <View styles={styles.buttonView}>
+                        <Button title='Confirm' onPress={confirmHandler} />
+                    </View>
+                    <View styles={styles.buttonView}>
+                        <Button title='Cancel' onPress={cancelHandler} />
+                    </View>
+                </View>
             </View>
         </Modal>
     )
@@ -48,10 +54,20 @@ const styles = StyleSheet.create({
     input: {
         borderBottomWidth: 2,
         borderBottomColor: 'purple',
-        width: '50%',
+        textAlign: 'center',
     },
     image : {
         width: 100,
         height: 100,
+        marginBottom: 20,
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        width: '50%',
+    },
+    buttonView: {
+        color: 'white',
+        backgroundColor: 'blue',
     }
 });
