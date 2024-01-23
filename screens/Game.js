@@ -12,7 +12,7 @@ export default function Game({ userName, guessNumber, theNumber, count, setCount
      * useEffect hook is called after the component is rendered
      */
     useEffect(() => {
-        console.log("useEffect triggered", { guessNumber, theNumber, count });
+        // if guessNumber and userName are not empty, compare the numbers
         if (guessNumber && userName) { 
             compareNumbers();
         }
@@ -36,9 +36,7 @@ export default function Game({ userName, guessNumber, theNumber, count, setCount
             setWin(true);
             setMessage("Congrats " + userName + "! You Won!");
             setCount(0);
-            // handleGameOver();
         } else if (count === 0) {
-            // setGameOver(true);
             setMessage("Hello " + userName + "\nYou have chosen " + guessNumber + "\nThat's not my number!\nYou have no attempts left!");
         } else {
             let hint = guessNumber < theNumber ? "Guess higher!" : "Guess lower!";
@@ -67,7 +65,11 @@ export default function Game({ userName, guessNumber, theNumber, count, setCount
                 : 
                 <>
                     <Button text="I am done" onPress={handleGameOver} color={'alert'} /> 
-                    <Button text="Let Me Guess Again" onPress={handleTryAgain} color={'confirm'} />
+                    { count > 0 ? 
+                        <Button text="Let Me Guess Again" onPress={handleTryAgain} color={'confirm'} />
+                    :
+                        <Text style={{color: colors.disableConfirm}}>Let Me Guess Again</Text>}
+                    
                 </>
                 }
             </View>

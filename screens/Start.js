@@ -158,6 +158,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background,
+    // backgroundColor: 'transparent',
+    // backgroundImage: 'linear-gradient(to top, #D8BFD8, #d7e1ec)',
     paddingTop: 60,
     width: '100%',
     alignItems: 'center',

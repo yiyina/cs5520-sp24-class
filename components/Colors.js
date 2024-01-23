@@ -7,9 +7,6 @@ const colors = {
     disableConfirm: 'white',
     confirm: 'blue',
     alert: '#B22222',
-    blue: 'blue',
-    white: 'white',
-    purple: 'purple',
 }
 
 export default colors;
