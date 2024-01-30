@@ -12,6 +12,7 @@ export default function Input({ inputHandler, modalVisible, dismissModal }) {
     }
     function confirmHandler() {
         inputHandler(text);
+        setText("");
     }
     function cancelHandler() {
         dismissModal();
@@ -29,11 +30,11 @@ export default function Input({ inputHandler, modalVisible, dismissModal }) {
                     placeholder="Type something..."
                     style={styles.input} 
                     value={text} 
-                    onChangeText={changeTextHandler}
+                    onChangeText={changeTextHandler} // changeTextHandler 可以写成 setText
                 />
                 <View style={styles.buttonContainer}>
                     <View styles={styles.buttonView}>
-                        <Button title='Confirm' onPress={confirmHandler} />
+                        <Button title='Confirm' onPress={confirmHandler} disabled={!text}/>
                     </View>
                     <View styles={styles.buttonView}>
                         <Button title='Cancel' onPress={cancelHandler} />
