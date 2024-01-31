@@ -32,6 +32,13 @@ export default function App() {
     setIsModalVisible(false);
   }
 
+  function deleteHandler(id) {
+    console.log("Delete item", id);
+    setGoals((currentGoals) => {
+      return currentGoals.filter((goal) => goal.id != id);
+    });
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
@@ -50,7 +57,7 @@ export default function App() {
           renderItem={({ item })=>{
             console.log(item);
             return (
-              <GoalItem goalObj={item} />
+              <GoalItem goalObj={item} deleteFunction={deleteHandler} />
             );
         }}>
 
@@ -73,7 +80,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-    justifyContent: 'center',
   },
   topView: {
     flex: 1,
@@ -86,18 +92,5 @@ const styles = StyleSheet.create({
   bottomView: {
     flex: 4,
     backgroundColor: 'lightpink',
-    // alignItems: 'center',
   },
-  // text: {
-  //   textAlign: 'center',
-  //   fontSize: 30,
-  //   color: 'white',
-  //   padding: 5,
-  //   marginTop: 5,
-  // },
-  // textContainer: {
-  //   borderRadius: 10,
-  //   backgroundColor: 'purple',
-  //   marginTop: 35,
-  // }
 });
