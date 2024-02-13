@@ -53,7 +53,10 @@ export default function Home() {
       <StatusBar style="auto" />
       <View style={styles.topView}>
         <Header name={appName} version={2} />
-        <PressableButton customStyle={styles.addButton} onPressFunction={()=> setIsModalVisible(true)}>
+        <PressableButton 
+          customStyle={styles.addButton} 
+          onPressFunction={()=> setIsModalVisible(true)}
+          pressedStyle={styles.pressedButton}>
           <Text>Add a goal</Text>
         </PressableButton>
         {/* <Button title="Add a goal" onPress={showModal}/> */}
@@ -110,7 +113,10 @@ const styles = StyleSheet.create({
   },
   addButton: {
     backgroundColor: '#979',
-    // padding: 10,
-    // borderRadius: 10,
+    marginTop: 10,
   },
+  pressedButton: {
+    backgroundColor: 'yellow',
+    opacity: 0.5,
+  }
 });

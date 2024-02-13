@@ -1,5 +1,7 @@
 import { StyleSheet, Text, View, Button, Pressable } from 'react-native'
 import React from 'react'
+import PressableButton from './PressableButton';
+import { EvilIcons } from '@expo/vector-icons';
 
 export default function GoalItem({ goalObj, deleteFunction, detailFunction }) {
     function deleteHandler() {
@@ -15,7 +17,10 @@ export default function GoalItem({ goalObj, deleteFunction, detailFunction }) {
                 android_ripple={{color:"#e9e"}}>
                     <Text style={styles.text}>{goalObj.text}</Text>
                     <View style={styles.buttonContainer}>
-                        <Button color={"black"} title='X' onPress={deleteHandler}/>
+                        {/* <Button color={"black"} title='X' onPress={deleteHandler}/> */}
+                        <PressableButton customStyle={styles.deleteButton} onPressFunction={deleteHandler}>
+                        <EvilIcons name="trash" size={36} color="black" />
+                        </PressableButton>
                     </View>
             </Pressable>
         </View>
@@ -45,4 +50,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    deleteButton: {
+        borderRadius: 5,
+    }
 })

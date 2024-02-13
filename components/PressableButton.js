@@ -4,7 +4,11 @@ import React from 'react'
 export default function PressableButton({ customStyle, onPressFunction, pressedStyle, children }) {
   return (
     <Pressable 
-        style={(pressed) => [styles.defaultStyle, customStyle, pressed && styles.pressed]} 
+        style={({pressed}) => [
+            styles.defaultStyle, 
+            customStyle, 
+            pressed && pressedStyle
+        ]} 
         onPress={onPressFunction}>
         <View>
             {children}
@@ -15,14 +19,11 @@ export default function PressableButton({ customStyle, onPressFunction, pressedS
 
 const styles = StyleSheet.create({
     defaultStyle: {
-        margin: 10,
-        padding: 10,
-        backgroundColor: '#aaa',
-        borderRadius: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
+        borderRadius: 5,
+        padding: 5,
+        backgroundColor: "#aaa",
     },
-    pressed: {
-        backgroundColor: 'lightpink',
-    },
+    // pressed: {
+    //     opacity: 0.5,
+    // },
 })
