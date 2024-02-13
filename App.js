@@ -1,96 +1,33 @@
-import { StatusBar } from 'expo-status-bar';
-import { Button, StyleSheet, Text, SafeAreaView, View, ScrollView, FlatList } from 'react-native';
-import Header from './components/Header';
-import { useState } from 'react';
-import Input from './components/Input';
-import GoalItem from './components/GoalItem';
+import { StyleSheet, Text, Button } from 'react-native'
+import React from 'react'
+import Home from './components/Home'
+import GoalDetails from './components/GoalDetails'
 
-export default function App() {
-  const appName = "MyApp";
-  const [text, setText] = useState("");
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [goals, setGoals] = useState([]);
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
-  function receiveInput(data) {
-    console.log("Receive input", data);
-    // setText(data);
-    // 1. define a new object{text:..., id:...} and store data in it
-    const newGoal = {text: data, id: Math.random()};
-    // 2. store the new object in an array
-    // let newArray = [...goals, newObject];
-    console.log(newGoal);
-    // 3. update the state with the new array
-    setGoals((currentGoals) => {return [...currentGoals, newGoal]});
-    setIsModalVisible(false);
-  }
-  
-  function showModal() {
-    setIsModalVisible(true);
-  }
+const Stack = createNativeStackNavigator();
+console.log(Stack);
 
-  function dismissModal() {
-    setIsModalVisible(false);
-  }
-
-  function deleteHandler(id) {
-    console.log("Delete item", id);
-    setGoals((currentGoals) => {
-      return currentGoals.filter((goal) => goal.id != id);
-    });
-  }
-
-  return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar style="auto" />
-      <View style={styles.topView}>
-        <Header name={appName} version={2} />
-        <Button title="Add a goal" onPress={showModal}/>
-        <Input 
-          inputHandler={receiveInput} 
-          modalVisible={isModalVisible}
-          dismissModal={dismissModal}/>
-      </View>
-      <View style={styles.bottomView}>
-        <FlatList 
-          contentContainerStyle={styles.scrollViewContent}
-          data={goals} 
-          renderItem={({ item })=>{
-            console.log(item);
-            return (
-              <GoalItem goalObj={item} deleteFunction={deleteHandler} />
-            );
-        }}>
-
-        </FlatList>
-        {/* <ScrollView contentContainerStyle={styles.scrollViewContent}>
-          { goals.map((goal) => 
-            <View style={styles.textContainer}>
-              { text ? <Text style={styles.text}>{goals}</Text> : null }
-              { text && <Text style={styles.text}>{text}</Text> }
-              <Text key={goal.id} style={styles.text}>{goal.text}</Text>
-            </View>
-          )}
-        </ScrollView> */}
-      </View>
-    </SafeAreaView>
-  );
+function warningHandler() {
+  console.log("Warning");
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
-  topView: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  scrollViewContent: {
-    alignItems: 'center',
-  },
-  bottomView: {
-    flex: 4,
-    backgroundColor: 'lightpink',
-  },
-});
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{
+          headerStyle: {backgroundColor: '#929'}, 
+          headerTintColor: 'white',}}>
+        <Stack.Screen options={{headerTitle: 'All My Goals'}} name="Home" component={Home} />
+        <Stack.Screen options={({ route }) => ({
+          headerTitle: route.params ? route.params.goalData.text : "Details",
+          headerRight: ()=> {
+            return <Button title="Warning" color="gray" onPress={warningHandler}/>
+          }})} name="Details" component={GoalDetails} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  )
+}
+
+const styles = StyleSheet.create({})
