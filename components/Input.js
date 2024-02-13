@@ -1,74 +1,90 @@
-import { Button, Modal, StyleSheet, View, TextInput, Image } from 'react-native'
-import React from 'react'
-import { useState } from 'react';
-
-export default function Input({ inputHandler, modalVisible, dismissModal }) {
+import {
+    Button,
+    Image,
+    Modal,
+    StyleSheet,
+    Text,
+    TextInput,
+    View,
+  } from "react-native";
+  import React, { useState } from "react";
+  
+  export default function Input({ inputHandler, modalVisible, dismissModal }) {
     const [text, setText] = useState("");
-
     // callback handler
     function changeTextHandler(changedText) {
-        console.log("User is typing..." + changedText);
-        setText(changedText);
+      // console.log("user is typing ", changedText);
+  
+      setText(changedText);
     }
+  
     function confirmHandler() {
-        inputHandler(text);
-        setText("");
+      inputHandler(text);
+      setText("");
     }
     function cancelHandler() {
-        dismissModal();
+      setText("");
+  
+      // hide the modal
+      dismissModal();
     }
     return (
-        <Modal visible={modalVisible}>
-            <View style={styles.container}>
-                <Image 
-                    source={{uri : "http://cdn-icons-png.flaticon.com/512/2617/2617812.png"}} 
-                    style={styles.image} />
-                {/* <Image 
-                    source={require("../assets/icon.png")}
-                    style={styles.image} /> */}
-                <TextInput 
-                    placeholder="Type something..."
-                    style={styles.input} 
-                    value={text} 
-                    onChangeText={changeTextHandler} // changeTextHandler 可以写成 setText
+      <Modal visible={modalVisible} animationType="slide" transparent={true}>
+        <View style={styles.container}>
+          <View style={styles.modalView}>
+            <Image
+              source={{
+                uri: "https://cdn-icons-png.flaticon.com/512/2617/2617812.png",
+              }}
+              style={styles.image}
+            />
+            <Image source={require("../assets/goal.png")} style={styles.image} />
+            <TextInput
+              placeholder="Type something"
+              style={styles.input}
+              value={text}
+              onChangeText={changeTextHandler}
+            />
+            <View style={styles.buttonsContainer}>
+              <View style={styles.buttonView}>
+                <Button title="Cancel" onPress={cancelHandler} />
+              </View>
+              <View style={styles.buttonView}>
+                <Button
+                  title="Confirm"
+                  onPress={confirmHandler}
+                  disabled={!text}
                 />
-                <View style={styles.buttonContainer}>
-                    <View styles={styles.buttonView}>
-                        <Button title='Confirm' onPress={confirmHandler} disabled={!text}/>
-                    </View>
-                    <View styles={styles.buttonView}>
-                        <Button title='Cancel' onPress={cancelHandler} />
-                    </View>
-                </View>
+              </View>
             </View>
-        </Modal>
-    )
-}
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#ccc',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },  
-    input: {
-        borderBottomWidth: 2,
-        borderBottomColor: 'purple',
-        textAlign: 'center',
-    },
-    image : {
-        width: 100,
-        height: 100,
-        marginBottom: 20,
-    },
-    buttonContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        width: '50%',
-    },
+          </View>
+        </View>
+      </Modal>
+    );
+  }
+  
+  const styles = StyleSheet.create({
     buttonView: {
-        color: 'white',
-        backgroundColor: 'blue',
-    }
+      width: "30%",
+      margin: 5,
+    },
+  
+    modalView: {
+      backgroundColor: "#999",
+      borderRadius: 20,
+      padding: "10%",
+      alignItems: "center",
+    },
+    buttonsContainer: { flexDirection: "row" },
+    input: {
+      borderBottomWidth: 2,
+      borderBottomColor: "purple",
+      width: "50%",
+    },
+    container: {
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    image: { width: 100, height: 100 },
 });

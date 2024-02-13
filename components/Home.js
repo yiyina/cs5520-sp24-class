@@ -1,10 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
-import { Button, StyleSheet, Text, SafeAreaView, View, ScrollView, FlatList } from 'react-native';
+import { Button, StyleSheet, Text, SafeAreaView, View, ScrollView, FlatList, Pressable } from 'react-native';
 import { useState } from 'react';
 import Header from './Header';
 import Input from './Input';
 import GoalItem from './GoalItem';
 import { useNavigation } from '@react-navigation/native';
+import PressableButton from './PressableButton';
 
 export default function Home() {
   const navigation = useNavigation();
@@ -52,7 +53,10 @@ export default function Home() {
       <StatusBar style="auto" />
       <View style={styles.topView}>
         <Header name={appName} version={2} />
-        <Button title="Add a goal" onPress={showModal}/>
+        <PressableButton customStyle={styles.addButton} onPressFunction={()=> setIsModalVisible(true)}>
+          <Text>Add a goal</Text>
+        </PressableButton>
+        {/* <Button title="Add a goal" onPress={showModal}/> */}
         <Input 
           inputHandler={receiveInput} 
           modalVisible={isModalVisible}
@@ -103,5 +107,10 @@ const styles = StyleSheet.create({
   bottomView: {
     flex: 4,
     backgroundColor: 'lightpink',
+  },
+  addButton: {
+    backgroundColor: '#979',
+    // padding: 10,
+    // borderRadius: 10,
   },
 });
