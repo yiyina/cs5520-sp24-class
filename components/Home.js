@@ -1,13 +1,40 @@
 import { StatusBar } from 'expo-status-bar';
-import { Button, StyleSheet, Text, SafeAreaView, View, ScrollView, FlatList, Pressable } from 'react-native';
-import { useState } from 'react';
+import { Button, StyleSheet, Text, SafeAreaView, View, ScrollView, FlatList, Pressable, Alert } from 'react-native';
+import { useState, useEffect } from 'react';
 import Header from './Header';
 import Input from './Input';
 import GoalItem from './GoalItem';
 import { useNavigation } from '@react-navigation/native';
 import PressableButton from './PressableButton';
+import { collection, onSnapshot } from 'firebase/firestore';
+import { database } from '../firebase-files/firebaseSetup';
+import { writeToDB, deleteFromDB } from '../firebase-files/firebaseHelpers';
 
 export default function Home() {
+  useEffect(() => {
+    // set up a listener to get realtime date from firestore - only after the first render
+    onSnapshot(collection(database, "goals"), (querySnapshot) => {
+      if (querySnapshot.empty) {
+        console.log("No goals found");
+        // Alert.alert("No goals found");
+        return;
+      }
+      let newArray = [];
+      let newArray1 = [];
+      querySnapshot.forEach((doc) => {
+        console.log(doc.data());
+        // store this data in a new array
+        let newGoal = { text: doc.data().text, id: doc.id };
+        newArray.push({ ...doc.data(), id: doc.id });
+        newArray1.push(newGoal);
+      });
+      console.log("newArray: ", newArray);
+      console.log("newArray1: ", newArray1);
+      setGoals(newArray1);
+      // update the state with the new array
+    });
+  }, []);
+  
   const navigation = useNavigation();
   const appName = "MyApp";
   const [text, setText] = useState("");
@@ -18,13 +45,16 @@ export default function Home() {
     console.log("Receive input", data);
     // setText(data);
     // 1. define a new object{text:..., id:...} and store data in it
-    const newGoal = {text: data, id: Math.random()};
+    // const newGoal = {text: data, id: Math.random()};
+    // don't need id anymore, because it's being generated in the writeToDB function
+    const newGoal = { text: data };
     // 2. store the new object in an array
     // let newArray = [...goals, newObject];
     console.log(newGoal);
     // 3. update the state with the new array
     setGoals((currentGoals) => {return [...currentGoals, newGoal]});
     setIsModalVisible(false);
+    writeToDB(newGoal);
   }
   
   function showModal() {
@@ -37,9 +67,12 @@ export default function Home() {
 
   function goalDeleteHandler(id) {
     console.log("Delete item", id);
-    setGoals((currentGoals) => {
-      return currentGoals.filter((goal) => goal.id != id); // like a loop, if the condition is true, the item is kept
-    });
+    // setGoals((currentGoals) => {
+    //   return currentGoals.filter((goal) => goal.id != id); 
+    // });
+    deleteFromDB(id.toString());
+    setGoals(currentGoals => currentGoals.filter(goal => goal.id !== id));
+
   }
 
   function goalPressHandler(goalItem) {
@@ -63,7 +96,8 @@ export default function Home() {
         <Input 
           inputHandler={receiveInput} 
           modalVisible={isModalVisible}
-          dismissModal={dismissModal}/>
+          dismissModal={dismissModal} 
+        />
       </View>
       <View style={styles.bottomView}>
         <FlatList 
@@ -74,8 +108,9 @@ export default function Home() {
             return (
               <GoalItem 
                 goalObj={item} 
-                deleteFunction={goalDeleteHandler} 
-                detailFunction={goalPressHandler}/>
+                deleteFunction={() => goalDeleteHandler(item.id)} 
+                detailFunction={goalPressHandler}
+              />
             );
         }}>
 
