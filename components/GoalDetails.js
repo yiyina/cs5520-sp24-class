@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, Button } from 'react-native'
 import React, { useState, useEffect } from 'react'
 // import { useNavigation } from '@react-navigation/native'
+import GoalUsers from './GoalUsers'
 
 export default function GoalDetails({ navigation, route }) {
     const [warning, setWarning] = useState(false);
@@ -35,6 +36,7 @@ export default function GoalDetails({ navigation, route }) {
             title="extra details"
             onPress={() => navigation.push("Details")}
         />
+        <GoalUsers id={route.params.goalData.id}/>
         </View>
     )
 }
