@@ -20,7 +20,7 @@ import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { deleteFromDB, writeToDB } from "../firebase-files/firebaseHelper";
 import { database, auth } from "../firebase-files/firebaseSetup";
 export default function Home({ navigation }) {
-  // function cleanup() {}
+  function cleanup() {}
   useEffect(() => {
     // set up a listener to get realtime data from firestore - only after the first render
     const unsubscribe = onSnapshot(
@@ -45,8 +45,8 @@ export default function Home({ navigation }) {
         //updating the goals array with the new array
         setGoals(newArray);
       },
-      (err) => {
-        console.log(err);
+      (error) => {
+        Alert.alert(error.message);
       }
     );
     return () => {
