@@ -18,9 +18,12 @@ import PressableButton from "./PressableButton";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 
 import { deleteFromDB, writeToDB } from "../firebase-files/firebaseHelper";
-import { database, auth } from "../firebase-files/firebaseSetup";
+import { database, auth, storage } from "../firebase-files/firebaseSetup";
+import { ref, uploadBytesResumable } from "firebase/storage";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
+
 export default function Home({ navigation }) {
-  function cleanup() {}
+
   useEffect(() => {
     // set up a listener to get realtime data from firestore - only after the first render
     const unsubscribe = onSnapshot(
@@ -58,24 +61,49 @@ export default function Home({ navigation }) {
   // const [text, setText] = useState("");
   const [goals, setGoals] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  function receiveInput(data) {
-    // console.log("recieve input ", data);
-    // setText(data);
-    //1. define a new object {text:.., id:..} and store data in object's text
-    // 2. use Math.random() to set the object's id
-    // const newGoal = { text: data, id: Math.random() };
-    //don't need id anymore as Firestore is assigning one automatically
-    const newGoal = { text: data };
-    // const newArray = [...goals, newGoal];
-    //setGoals (newArray)
-    //use updater function whenever we are updating state variables based on the current value
-    // setGoals((currentGoals) => [...currentGoals, newGoal]);
 
-    // 3. how do I add this object to goals array?
-    setIsModalVisible(false);
-    //use this to update the text showing in the
-    //Text component
-    writeToDB(newGoal, "goals");
+  async function getImageData(uri) {
+    try {
+      const response = await fetch(uri);
+      const blob = await response.blob();
+      const imageName = uri.substring(uri.lastIndexOf("/") + 1);
+      const imageRef = ref(storage, `images/${imageName}`);
+      const uploadResult = await uploadBytesResumable(imageRef, blob);
+      return uploadResult.metadata.fullPath;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function receiveInput(data, imageUri) {
+    let uploadImageUri = "";
+    try {
+      if (imageUri) {
+        uploadImageUri = await getImageData(imageUri);
+      }
+      // console.log("recieve input ", data);
+      // setText(data);
+      //1. define a new object {text:.., id:..} and store data in object's text
+      // 2. use Math.random() to set the object's id
+      // const newGoal = { text: data, id: Math.random() };
+      //don't need id anymore as Firestore is assigning one automatically
+      let newGoal = { text: data };
+      if (uploadImageUri) {
+        newGoal = {...newGoal, imageUri: uploadImageUri};
+      }
+      // const newArray = [...goals, newGoal];
+      //setGoals (newArray)
+      //use updater function whenever we are updating state variables based on the current value
+      // setGoals((currentGoals) => [...currentGoals, newGoal]);
+  
+      // 3. how do I add this object to goals array?
+      setIsModalVisible(false);
+      //use this to update the text showing in the
+      //Text component
+      writeToDB(newGoal, "goals");
+    } catch (error) {
+      console.log(error);
+    }
   }
   function dismissModal() {
     setIsModalVisible(false);

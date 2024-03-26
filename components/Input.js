@@ -8,9 +8,11 @@ TextInput,
 View,
 } from "react-native";
 import React, { useState } from "react";
+import ImageManager from "./ImageManager";
 
 export default function Input({ inputHandler, modalVisible, dismissModal }) {
 const [text, setText] = useState("");
+const [takenImageUri, setTakenImageUri] = useState("");
 // callback handler
 function changeTextHandler(changedText) {
     // console.log("user is typing ", changedText);
@@ -19,7 +21,7 @@ function changeTextHandler(changedText) {
 }
 
 function confirmHandler() {
-    inputHandler(text);
+    inputHandler(text, takenImageUri);
     setText("");
 }
 function cancelHandler() {
@@ -27,6 +29,10 @@ function cancelHandler() {
 
     // hide the modal
     dismissModal();
+}
+function receiveImageUri(takenImageUri) {
+    setTakenImageUri(takenImageUri);
+    console.log("Received image uri: ", takenImageUri);
 }
 return (
     <Modal visible={modalVisible} animationType="slide" transparent={true}>
@@ -37,7 +43,7 @@ return (
             uri: "https://cdn-icons-png.flaticon.com/512/2617/2617812.png",
             }}
             style={styles.image}
-        />
+        /> 
         <Image source={require("../assets/goal.png")} style={styles.image} />
         <TextInput
             placeholder="Type something"
@@ -45,6 +51,7 @@ return (
             value={text}
             onChangeText={changeTextHandler}
         />
+        <ImageManager receiveImageUri={receiveImageUri}/>
         <View style={styles.buttonsContainer}>
             <View style={styles.buttonView}>
             <Button title="Cancel" onPress={cancelHandler} />

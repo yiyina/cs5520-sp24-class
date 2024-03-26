@@ -2,57 +2,54 @@ import { StyleSheet, Text, View, FlatList } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { getAllDocs, writeToDB } from '../firebase-files/firebaseHelper';
 
-export default function GoalUsers ({ id }) {
-    const [goals, setGoals] = useState([]);
+export default function GoalUsers({ id }) {
     const [users, setUsers] = useState([]);
-
     useEffect(() => {
-        async function fetchUsers() {
-            try {
-                const usersFromDB = await getAllDocs(`goals/${id}/users`);
-                console.log(usersFromDB);
-                if (usersFromDB.length) {
-                setUsers(usersFromDB);
-                return;
-                }
-                const response = await fetch(
-                "https://jsonplaceholder.typicode.com/users"
-                );
-                if (!response.ok) {
-                throw new Error("data wasn't there!"); // automatically exit
-                }
-                const data = await response.json();
-                data.forEach((element) => {
-                    // writeToDB(element, `goals/${id}Users/`);
-                    writeToDB(element, "goals", id, "users");
-                });
-                // console.log(data);
-                if(usersFromDB.length) {
-                    setGoals(data); 
-                    return;
-                }
-            }
-            catch (error) {
-                console.error(error);
-            }
+      async function fetchUsers() {
+        try {
+          const usersFromDB = await getAllDocs(`goals/${id}/users`);
+          console.log("usersFromDB: ", usersFromDB);
+          // we should check if usersFromDB is undefined
+          if (usersFromDB) {
+            setUsers(usersFromDB);
+            return;
+          }
+          const response = await fetch(
+            "https://jsonplaceholder.typicode.com/users"
+          );
+          if (!response.ok) {
+            throw new Error("data wasn't there!"); // automatically exit
+          }
+          //extract data if successful
+          const data = await response.json();
+          setUsers(data);
+          //write a loop , forEach, on data and call writeToDB
+          // with (one user, "goals",id,"users" )
+          data.forEach((element) => {
+            // write each user to a document in users subcollection
+            writeToDB(element, "goals", id, "users");
+            //or
+            //  writeToDB(element, `goals/${id}/users`);
+            // writeToDB(element, "goals/"+id+"/users")
+          });
+        } catch (err) {
+          console.log("fetch users ", err);
+          //show a message to user
         }
-        fetchUsers(); 
+      }
+      fetchUsers();
     }, []);
-
+  
     return (
-        <View>
-            <Text>GoalUsers</Text>
-            <FlatList 
-                contentContainerStyle={styles.scrollViewContent}
-                data={goals} 
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={({ item }) => { 
-                    console.log(item);
-                    return <Text>{item.name}</Text>
-                }}
-            />
-        </View>
-    )
-}
-
-const styles = StyleSheet.create({})
+      <View>
+        <FlatList
+          data={users}
+          renderItem={({ item }) => {
+            return <Text>{item.name}</Text>;
+          }}
+        />
+      </View>
+    );
+  }
+  
+  const styles = StyleSheet.create({});

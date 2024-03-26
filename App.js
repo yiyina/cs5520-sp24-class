@@ -1,5 +1,5 @@
 import { StyleSheet, Text, Button } from 'react-native'
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import Home from './components/Home'
 import GoalDetails from './components/GoalDetails'
 import Signup from './components/Signup'
@@ -14,51 +14,48 @@ import { Ionicons } from '@expo/vector-icons'
 import { AntDesign } from '@expo/vector-icons'
 
 const Stack = createNativeStackNavigator();
-
-function warningHandler() {
-  console.log("Warning");
-}
-
-
-export default function App({ navigation }) {
-  const [userloggedIn, setUserloggedIn] = React.useState(false);
-
+export default function App() {
+  const [userLoggedIn, setUserLoggedIn] = useState(false);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        setUserloggedIn(true);
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/auth.user
+        // const uid = user.uid;
+        setUserLoggedIn(true);
+        // ...
       } else {
-        setUserloggedIn(false);
+        // User is signed out
+        // ...
+        setUserLoggedIn(false);
       }
-    })
-  }, [])
-
+    });
+  }, []);
   const AuthStack = (
     <>
-      <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Signup" component={Signup} />
+      <Stack.Screen name="Login" component={Login} />
     </>
-  )
-
+  );
   const AppStack = (
     <>
       <Stack.Screen
         options={({ navigation }) => {
           return {
-            headerTitle: 'All My Goals',
+            headerTitle: "All My Goals",
             headerRight: () => {
               return (
                 <PressableButton
                   onPressFunction={() => {
-                    navigation.navigate("Profile")
+                    navigation.navigate("Profile");
                   }}
                 >
                   <Ionicons name="person" size={24} color="white" />
                 </PressableButton>
-              )
-            }
-          }
+              );
+            },
+          };
         }}
         name="Home"
         component={Home}
@@ -84,29 +81,30 @@ export default function App({ navigation }) {
           },
         }}
       />
-      <Stack.Screen options={({ route }) => ({
-        headerTitle: route.params ? route.params.goalData.text : "Details",
-        headerRight: () => {
-          return <Button title="Warning" color="gray" onPress={warningHandler} />
-        }
-      })}
+      <Stack.Screen
+        options={({ route }) => {
+          return {
+            headerTitle: route.params ? route.params.data.text : "Details",
+          };
+        }}
         name="Details"
-        component={GoalDetails} />
+        component={GoalDetails}
+      />
     </>
-  )
-
+  );
   return (
     <NavigationContainer>
       <Stack.Navigator
-        innitialRouteName="Signup"
+        initialRouteName="Signup"
         screenOptions={{
-          headerStyle: { backgroundColor: '#929' },
-          headerTintColor: 'white',
-        }}>
-        {userloggedIn ? AppStack : AuthStack}
+          headerStyle: { backgroundColor: "#929" },
+          headerTintColor: "white",
+        }}
+      >
+        {userLoggedIn ? AppStack : AuthStack}
       </Stack.Navigator>
     </NavigationContainer>
-  )
+  );
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});
